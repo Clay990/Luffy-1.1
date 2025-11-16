@@ -1,0 +1,26 @@
+INFO:__main__:Luffy bot is starting...
+WARNING:discord.client:PyNaCl is not installed, voice will NOT be supported
+INFO:discord.client:logging in using static token
+INFO:werkzeug:[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8080
+ * Running on http://10.184.38.192:8080
+INFO:werkzeug:[33mPress CTRL+C to quit[0m
+INFO:discord.gateway:Shard ID None has connected to Gateway (Session ID: 6da5e63f80d3c018d1381bc2f8b5cbd8).
+INFO:src.cogs.events:Logged in as Test Luffy
+INFO:src.cogs.events:Clearing old commands and syncing new ones...
+INFO:src.cogs.events:🧹 Daily Memory Cleanup Complete
+INFO:src.cogs.events:Synced 25 command(s) globally.
+INFO:__main__:Luffy bot is starting...
+WARNING:discord.client:PyNaCl is not installed, voice will NOT be supported
+INFO:discord.client:logging in using static token
+INFO:werkzeug:[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8080
+ * Running on http://10.184.38.192:8080
+INFO:werkzeug:[33mPress CTRL+C to quit[0m
+INFO:discord.gateway:Shard ID None has connected to Gateway (Session ID: a1e9aa0c53c514cd2972d23fc34996d0).
+INFO:src.cogs.events:Logged in as Test Luffy
+INFO:src.cogs.events:Clearing old commands and syncing new ones...
+INFO:src.cogs.events:🧹 Daily Memory Cleanup Complete
+INFO:src.cogs.events:Synced 25 command(s) globally.

@@ -1,0 +1,14 @@
+{
+  "10001": {
+    "name": "Title: 'Rookie'", "price": 100000, "type": "title",
+    "description": "A title for those just starting their journey."
+  },
+  "10002": {
+    "name": "Title: 'Warlord'", "price": 5000000, "type": "title",
+    "description": "A title for a truly fearsome pirate."
+  },
+  "10003": {
+    "name": "Title: 'Yonko'", "price": 50000000, "type": "title",
+    "description": "A title for one who rules the seas."
+  }
+}

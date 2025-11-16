@@ -1,0 +1,6 @@
+discord.py
+google-generativeai
+python-dotenv
+firebase-admin
+Pillow
+Flask

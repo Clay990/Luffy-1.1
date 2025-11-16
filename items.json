@@ -1,0 +1,38 @@
+{
+  "cannonball_x10": {
+    "name": "Cannonball x10", "price": 500, "type": "consumable",
+    "description": "A pack of 10 cannonballs for ship wars."
+  },
+  "repair_tool": {
+    "name": "Repair Tools", "price": 700, "type": "consumable",
+    "description": "Used to repair 100 ship HP."
+  },
+  "small_chest": {
+    "name": "Small Chest", "price": 200, "type": "lootbox",
+    "description": "Contains common loot (30–70 Berries value)."
+  },
+  "medical_kit": {
+    "name": "Medical Kit", "price": 300, "type": "consumable",
+    "description": "Heals 50 HP."
+  },
+  "badge_resilience": {
+    "name": "Jolly Roger of Resilience", "price": 100000, "type": "badge",
+    "description": "A legendary flag that inspires courage. Provides a 2% defense bonus in ship wars.",
+    "effect": {"type": "defense_boost", "value": 0.02}
+  },
+  "badge_fortune": {
+    "name": "Flag of Fortune", "price": 150000, "type": "badge",
+    "description": "A lucky flag that attracts wealth. Increases daily rewards by 10% for all crew members.",
+    "effect": {"type": "reward_boost", "value": 0.10}
+  },
+  "badge_wisdom": {
+    "name": "Banner of Wisdom", "price": 200000, "type": "badge",
+    "description": "A banner that signifies great knowledge. Increases all ship XP gains by 5%.",
+    "effect": {"type": "xp_boost", "value": 0.05}
+  },
+  "devil_fruit_ticket": {
+    "name": "Devil Fruit Ticket", "price": 3000, "type": "consumable",
+    "description": "A mysterious ticket that grants one spin in the devil fruit lottery.",
+    "limited_time": true
+  }
+}

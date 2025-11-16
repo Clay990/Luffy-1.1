@@ -1,0 +1,501 @@
+[
+  {
+    "name": "config_intrusion",
+    "description": "Configure the bot's intrusion level (0-100).",
+    "options": [
+      {
+        "name": "level",
+        "description": "The intrusion level (0-100).",
+        "type": 4,
+        "required": true
+      }
+    ]
+  },
+  {
+    "name": "recalculate_ship_level",
+    "description": "Recalculate a ship's level based on its XP.",
+    "options": [
+      {
+        "name": "ship_name",
+        "description": "The name of the ship to recalculate.",
+        "type": 3,
+        "required": true
+      }
+    ]
+  },
+  {
+    "name": "events",
+    "description": "Manage world events.",
+    "options": [
+      {
+        "name": "start",
+        "description": "Start a world event.",
+        "type": 1,
+        "options": [
+          {
+            "name": "event_name",
+            "description": "The name of the event to start.",
+            "type": 3,
+            "required": true
+          }
+        ]
+      },
+      {
+        "name": "stop",
+        "description": "Stop the current world event.",
+        "type": 1
+      }
+    ]
+  },
+  {
+    "name": "cosmetic_shop",
+    "description": "Browse available cosmetic items."
+  },
+  {
+    "name": "buy_cosmetic",
+    "description": "Purchase a cosmetic item.",
+    "options": [
+      {
+        "name": "identifier",
+        "description": "The cosmetic name or ID",
+        "type": 3,
+        "required": true
+      }
+    ]
+  },
+  {
+    "name": "equip",
+    "description": "Equip a title you've unlocked.",
+    "options": [
+      {
+        "name": "identifier",
+        "description": "The cosmetic name or ID",
+        "type": 3,
+        "required": true
+      }
+    ]
+  },
+  {
+    "name": "profile",
+    "description": "Check your pirate profile.",
+    "options": [
+      {
+        "name": "user",
+        "description": "The user to view the profile of.",
+        "type": 6,
+        "required": false
+      }
+    ]
+  },
+  {
+    "name": "bal",
+    "description": "Check your balance and ship info."
+  },
+  {
+    "name": "adventure",
+    "description": "Go on a pirate adventure!"
+  },
+  {
+    "name": "private_adventure",
+    "description": "Go on a private pirate adventure! (Cost: 1000 Berries)"
+  },
+  {
+    "name": "recruit",
+    "description": "Recruit a new crew member!"
+  },
+  {
+    "name": "leaderboard",
+    "description": "See the top 5 pirates."
+  },
+  {
+    "name": "event",
+    "description": "Check the current world event."
+  },
+  {
+    "name": "daily",
+    "description": "Claim your daily reward."
+  },
+  {
+    "name": "bag",
+    "description": "Check your inventory."
+  },
+  {
+    "name": "gift",
+    "description": "Gift berries to another player.",
+    "options": [
+      {
+        "name": "user",
+        "description": "The user to gift berries to.",
+        "type": 6,
+        "required": true
+      },
+      {
+        "name": "amount",
+        "description": "The amount of berries to gift.",
+        "type": 4,
+        "required": true
+      }
+    ]
+  },
+  {
+    "name": "vote",
+    "description": "Get the link to vote for the bot and get 10,000 Berries!"
+  },
+  {
+    "name": "coinflip",
+    "description": "Gamble your berries in a coin flip!",
+    "options": [
+      {
+        "name": "amount",
+        "description": "The amount of berries to bet.",
+        "type": 4,
+        "required": true
+      },
+      {
+        "name": "side",
+        "description": "The side to bet on ('heads' or 'tails').",
+        "type": 3,
+        "required": true
+      }
+    ]
+  },
+  {
+    "name": "shop",
+    "description": "Buy and sell items.",
+    "options": [
+      {
+        "name": "list",
+        "description": "List all items in the shop.",
+        "type": 1
+      },
+      {
+        "name": "limited",
+        "description": "List all limited-time items in the shop.",
+        "type": 1
+      },
+      {
+        "name": "buy",
+        "description": "Buy an item from the shop.",
+        "type": 1,
+        "options": [
+          {
+            "name": "item_id",
+            "description": "The ID of the item to buy.",
+            "type": 3,
+            "required": true
+          },
+          {
+            "name": "quantity",
+            "description": "The quantity to buy.",
+            "type": 4,
+            "required": false
+          }
+        ]
+      },
+      {
+        "name": "sell",
+        "description": "Sell an item from your bag.",
+        "type": 1,
+        "options": [
+          {
+            "name": "item_id",
+            "description": "The ID of the item to sell.",
+            "type": 3,
+            "required": true
+          },
+          {
+            "name": "quantity",
+            "description": "The quantity to sell.",
+            "type": 4,
+            "required": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "use",
+    "description": "Use an item from your bag.",
+    "options": [
+      {
+        "name": "item_id",
+        "description": "The ID of the item to use.",
+        "type": 3,
+        "required": true
+      }
+    ]
+  },
+  {
+    "name": "duel",
+    "description": "Challenge another player to a duel.",
+    "options": [
+      {
+        "name": "user",
+        "description": "The user to duel.",
+        "type": 6,
+        "required": true
+      },
+      {
+        "name": "wager",
+        "description": "The amount of berries to wager.",
+        "type": 4,
+        "required": false
+      }
+    ]
+  },
+  {
+    "name": "auction",
+    "description": "Manage auctions.",
+    "options": [
+      {
+        "name": "list",
+        "description": "List all active auctions.",
+        "type": 1
+      },
+      {
+        "name": "sell",
+        "description": "Sell an item or crew member on the auction house.",
+        "type": 1,
+        "options": [
+          {
+            "name": "item_type",
+            "description": "The type of item to sell ('item' or 'crew').",
+            "type": 3,
+            "required": true
+          },
+          {
+            "name": "item_id",
+            "description": "The ID of the item or name of the crew member to sell.",
+            "type": 3,
+            "required": true
+          },
+          {
+            "name": "quantity",
+            "description": "The quantity to sell.",
+            "type": 4,
+            "required": true
+          },
+          {
+            "name": "starting_bid",
+            "description": "The starting bid for the auction.",
+            "type": 4,
+            "required": true
+          }
+        ]
+      },
+      {
+        "name": "bid",
+        "description": "Bid on an auction.",
+        "type": 1,
+        "options": [
+          {
+            "name": "auction_id",
+            "description": "The ID of the auction to bid on.",
+            "type": 3,
+            "required": true
+          },
+          {
+            "name": "bid_amount",
+            "description": "The amount to bid.",
+            "type": 4,
+            "required": true
+          }
+        ]
+      },
+      {
+        "name": "claim",
+        "description": "Claim winnings or sold items from ended auctions.",
+        "type": 1
+      }
+    ]
+  },
+  {
+    "name": "asset",
+    "description": "Download various game assets.",
+    "options": [
+      {
+        "name": "wanted_poster",
+        "description": "Download your wanted poster.",
+        "type": 1,
+        "options": [
+          {
+            "name": "user",
+            "description": "The user to generate the wanted poster for.",
+            "type": 6,
+            "required": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "guide",
+    "description": "Get a guide to the Grand Line!"
+  },
+  {
+    "name": "ship",
+    "description": "Manage your pirate ship.",
+    "options": [
+      {
+        "name": "badge",
+        "description": "Manage your ship's badge.",
+        "type": 2,
+        "options": [
+          {
+            "name": "equip",
+            "description": "Equip a badge to your ship.",
+            "type": 1,
+            "options": [
+              {
+                "name": "badge_id",
+                "description": "The ID of the badge to equip.",
+                "type": 3,
+                "required": true
+              }
+            ]
+          },
+          {
+            "name": "unequip",
+            "description": "Unequip the badge from your ship.",
+            "type": 1
+          }
+        ]
+      },
+      {
+        "name": "create",
+        "description": "Create a new pirate ship.",
+        "type": 1,
+        "options": [
+          {
+            "name": "name",
+            "description": "The name of your new ship.",
+            "type": 3,
+            "required": true
+          }
+        ]
+      },
+      {
+        "name": "join",
+        "description": "Join a pirate ship.",
+        "type": 1,
+        "options": [
+          {
+            "name": "name",
+            "description": "The name of the ship to join.",
+            "type": 3,
+            "required": true
+          }
+        ]
+      },
+      {
+        "name": "leave",
+        "description": "Leave your current pirate ship.",
+        "type": 1
+      },
+      {
+        "name": "disband",
+        "description": "Disband your pirate ship.",
+        "type": 1
+      },
+      {
+        "name": "info",
+        "description": "Get information about your ship.",
+        "type": 1
+      },
+      {
+        "name": "storage",
+        "description": "Manage your ship's storage.",
+        "type": 2,
+        "options": [
+          {
+            "name": "deposit",
+            "description": "Deposit an item into your ship's storage.",
+            "type": 1,
+            "options": [
+              {
+                "name": "item_id",
+                "description": "The ID of the item to deposit.",
+                "type": 3,
+                "required": true
+              },
+              {
+                "name": "quantity",
+                "description": "The quantity to deposit.",
+                "type": 4,
+                "required": true
+              }
+            ]
+          },
+          {
+            "name": "view",
+            "description": "View your ship's storage.",
+            "type": 1
+          }
+        ]
+      },
+      {
+        "name": "upgrade",
+        "description": "Upgrade your ship.",
+        "type": 1
+      },
+      {
+        "name": "war",
+        "description": "Challenge another ship to a war.",
+        "type": 1,
+        "options": [
+          {
+            "name": "target_ship_name",
+            "description": "The name of the ship to challenge.",
+            "type": 3,
+            "required": true
+          },
+          {
+            "name": "wager",
+            "description": "The amount of berries to wager.",
+            "type": 4,
+            "required": false
+          }
+        ]
+      },
+      {
+        "name": "repair",
+        "description": "Repair your ship.",
+        "type": 1,
+        "options": [
+          {
+            "name": "amount",
+            "description": "The amount of HP to repair.",
+            "type": 4,
+            "required": false
+          }
+        ]
+      },
+      {
+        "name": "promote",
+        "description": "Promote a crew member to officer.",
+        "type": 1,
+        "options": [
+          {
+            "name": "user",
+            "description": "The user to promote.",
+            "type": 6,
+            "required": true
+          }
+        ]
+      },
+      {
+        "name": "demote",
+        "description": "Demote a crew officer to member.",
+        "type": 1,
+        "options": [
+          {
+            "name": "user",
+            "description": "The user to demote.",
+            "type": 6,
+            "required": true
+          }
+        ]
+      }
+    ]
+  }
+]

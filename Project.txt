@@ -1,0 +1,461 @@
+1) High-level goals (what this system should achieve)
+
+Social loops: create teams (ships) with shared goals, private space, team progression, team wars — players collaborate and recruit.
+
+Currency sinks: many desirable, consumable, and permanent uses for Berries so currency drains keep value stable.
+
+Meaningful scarcity: storage limits, caps, limited-time items, decay — force trade and ship cooperation.
+
+Skill + randomness mix: some outcomes depend on player choices (strategy) and some on RNG (loot, gacha), keeping excitement.
+
+Modularity: everything stored in data files / DB so features can be added/removed easily.
+
+2) Core concepts & entities
+
+Player
+
+id, server_id, username
+
+berries (int)
+
+xp, level, hp (player HP used in duels)
+
+bag: {item_id: quantity} limited capacity
+
+ship_id (nullable)
+
+role (member/officer/captain)
+
+daily_claim_timestamp, duel_cooldown, war_cooldown
+
+Ship
+
+id, server_id, name, captain_id
+
+level, xp, hp, max_hp
+
+members[] (max 100)
+
+stats: cannons, cannonballs, repair_tools, medical_kits, supplies, storage_capacity, treasure_storage
+
+upgrades: dict (sails_lvl, hull_lvl, cannon_lvl, storage_lvl, medbay_lvl)
+
+ship_status: in_war(boolean), cooldowns
+
+ship_bank: berries stored (optional)
+
+Item
+
+id, name, type (consumable/craftable/equipment), rarity, price, effects, stack_limit, decay_time(optional)
+
+Shop
+
+shop_id, type (medical/weapon/pirate/shop_general/marketplace), item listings (dynamic or fixed)
+
+Event
+
+world events, raids, seasonal shops
+
+3) Phased Implementation Roadmap
+
+Phase 1 (MVP)
+
+Player balances, daily drops, bag storage, shops (basic), create/join ship (caps 100), ship storage, simple buy/sell commands.
+
+Phase 2 (Economy + Progression)
+
+Ship leveling, ship stats, consumables (cannonballs, repair tools), crew bonuses, limited-time items, bounty posters, leaderboards.
+
+Phase 3 (Combat & Social Systems)
+
+Ship wars, crew duels, wagering, ship HP loss/repair, storage loss, marketplace, auctions, events.
+
+Phase 4 (Advanced / Monetize)
+
+Premium items, private adventures, AI chat rewards, cosmetic-only purchases, downloadable assets.
+
+4) Commands (surface API for users)
+
+Group into Player / Ship / Shop / Combat / Admin.
+
+Player
+
+/balance — show berries & xp & ship`
+
+/daily — daily drop (berries + random loot)
+
+/bag — list bag contents
+
+/use <item> — use consumable
+
+/gift @user <amount> — transfer berries
+
+/profile [@user] — show stats
+
+Ship
+
+/ship create <name> — cost 5,000 berries (captain)
+
+/ship join <ship> — join ship (if capacity)
+
+/ship leave
+
+/ship info <ship>
+
+/ship upgrade <component> — spend berries + materials
+
+/ship storage deposit <item|amount>
+
+/ship storage withdraw <item|amount> (role limits apply)
+
+Shop
+
+/shop list <type>
+
+/shop buy <item> [qty]
+
+/shop sell <item> [qty] (sellback lower than buy)
+
+Combat / PvP
+
+/duel @user [wager]
+
+/ship war <target_ship> [wager] — requires captain/officer approval & cooldown
+
+/repair <amount> — spend repair_tools + berries to heal ship
+
+Admin
+
+/server-ships — list all ships in server
+
+/force-stop-war — admin only
+
+5) Shop types & item lists (starter catalog)
+
+Below are suggested items, tiers, cost ranges (Berries). Tweak numbers to server economy.
+
+General Shop (Pirate Shop)
+
+Small Chest — 200 berries — contains common loot (30–70 Berries value)
+
+Large Chest — 1,000 — better loot, chance rare
+
+Title: “First Mate” — 10,000 — cosmetic role
+
+Custom Name Change (ship) — 15,000
+
+Weapon Shop
+
+Cannonball x10 — 500 — consumable for ship war (damage multiplier)
+
+Explosive Bomb — 2,500 — high damage single-use (chance to destroy storage)
+
+Smoke Decoy — 1,200 — reduces opponent accuracy for one volley
+
+EMP Barrel — 4,000 — disable opponent cannons for 1 round (rare)
+
+Medical Shop
+
+Medical Kit — 300 — heal 50 player HP
+
+Field Med Pack — 1,500 — heal ship crew (applies to ship HP recovery rate)
+
+Medical Supply Crate — 6,000 — bulk
+
+Supply / Utility Shop
+
+Repair Tools — 700 — repair 100 ship HP
+
+Repair Kit x5 — 3,000
+
+Storage Upgrade (ship) — 10,000 — +500 capacity
+
+Supply Ration — 200 — consumed for crew buff XP+10% for 30m
+
+Crafting / Misc
+
+Blueprint (cannon upgrade) — 12,000
+
+Treasure Map (mini-raid) — 2,000 — opens mini-raid with loot
+
+Devil Fruit Ticket — 3,000 — spin in devil fruit lottery
+
+MarketPlace (Player-to-player)
+
+Auction system — list items -> bids -> winner pays + fee (fee = 5% burned)
+
+6) Loot, Rarity & Decay
+
+Rarity tiers: Common, Uncommon, Rare, Epic, Legendary
+Drop rate example: C 60%, U 25%, R 10%, E 4%, L 1%
+
+Decay / Expiry: Consumables can expire after N days in bag (encourage storage/usage). Example: perishable foods expire in 3 days; bombs don't expire.
+
+Item Durability: Equipment (cannons, hull) degrade with usage in war — need repair tools.
+
+7) Ship Stats & Combat formulas (core logic)
+
+Ship stat example fields
+
+level (L)
+
+cannons (C) — integer number of cannons
+
+cannonball_count (CB)
+
+hull_defense (HD) — depends on hull level
+
+hp, max_hp
+
+attack_power = base_attack * C * (1 + cannon_lvl * 0.1) * (1 + crew_bonus)
+
+Damage calculation (single volley)
+
+base_damage = (attacker.C * (1 + attacker.cannon_lvl * 0.08)) * RNG(0.8,1.2)
+defense_factor = 1 - (defender.hull_lvl * 0.03)  # higher hull reduces damage
+damage = floor(base_damage * defense_factor)
+
+
+Cannonball consumption: each volley consumes min(CB, C * balls_per_cannon). If CB=0, damage greatly reduced.
+
+Critical hits / misses: small RNG chance: crit x1.5, miss x0.
+
+Storage loss on defeat: when HP drops below thresholds, compute loot loss:
+
+40% chance to lose min(10%–30%, ship.storage) of supplies & treasure (randomized).
+
+Repairs cost berries + repair_tools.
+
+Player HP & Duels
+
+Player HP recovered by med kits or waiting (cooldown).
+
+Duel damage uses player weapon power + randomness.
+
+War resolution
+
+Multi-round. Each round: both ships fire, damages applied, possible use of consumables. War ends when a ship HP <=0 or after max rounds -> compare HP.
+
+Rewards
+
+Winners get a share of loser’s ship_bank (if wagered) + scraps (berries) + increased ship XP.
+
+Loser loses percentage of stored treasure and items (random).
+
+8) XP / Leveling & Rewards formulas
+
+Player XP gain from activity
+
+chat message XP: random small (0–3) with cooldown/min messages per minute (anti-spam)
+
+quest/mission XP: fixed
+
+duel/wins: large
+
+Ship XP
+
+sum of member contributions (e.g., % of berries spent on ship upgrades) + war victories + completed ship quests.
+
+Level thresholds example
+
+XP required = floor(100 * (1.2 ^ level)) — exponential.
+
+Ship level benefits
+
++max_hp, +cannons unlock, +storage capacity.
+
+Crew XP multipliers: ship_level * 0.02 -> member bonus.
+
+9) Storage & Inventory rules
+
+Player bag capacity: default 100 units (items have size).
+
+Ship storage capacity: default 1000 units; level-ups increase.
+
+Items placed in ship storage accessible by roles (captain/officer) or configurable. Withdraw limits for member roles.
+
+Loss mechanics
+
+Items in bag can be lost on duels (if duel has steal mechanic) or expire. Items stored safely but can be looted in a ship boarding event if ship loses a war.
+
+10) Daily Drops, Quests & Social events
+
+Daily drop (/daily): Base: 100–500 berries + 1–3 random items. Bonus if in ship: x1.5. If in ship and ship has supplies, increased.
+
+Crew Missions: collective goals per day (e.g., 500 messages, 50 duels, 3 raids) -> shared bounty to ship bank.
+
+Random World Events: Storms (reduce ship HP slowly), Marine patrols (chance to get fined or lose supplies), Treasure Islands (mini-raid).
+
+11) Economy balancing & anti-abuse
+
+Earning caps: per-minute/per-hour earning caps from chat XP to avoid farming.
+
+Transaction atomicity: use DB transactions (SQL or atomic file ops) for trade.
+
+Rate limits: cooldowns for commands that give berries.
+
+Bot detection: ignore bot messages, detect suspicious repeating patterns, ban farming accounts.
+
+Inflation control:
+
+Burn mechanics: % burned on auctions, war taxes, chest openings.
+
+Sinks: upgrades, shop purchases, ship creation cost, repair costs.
+
+Timed scarcity: limited-time items with high price.
+
+Logs: persistent history of big transfers for admins & rollback.
+
+12) Premium & monetization ideas (safe & optional)
+
+Cosmetic-only purchases (titles, colors, emotes).
+
+Exclusive ship skins or unique decorative items (no gameplay advantage).
+
+Extra quick-respawn / storage expansion for premium.
+
+Private story/adventure episodes for premium servers.
+
+13) File / Module structure (suggestion)
+luffy-bot/
+├─ main.py
+├─ config.py
+├─ requirements.txt
+├─ /cogs
+│   ├─ economy/
+│   │   ├─ __init__.py
+│   │   ├─ economy_manager.py       # berries_manager, transaction API
+│   │   ├─ shops.py                 # shop logic, buy/sell
+│   │   ├─ items.py                 # item definitions & rarity
+│   │   ├─ daily.py                 # daily drops, quests
+│   │   └─ marketplace.py           # auctions, trades
+│   ├─ ships/
+│   │   ├─ __init__.py
+│   │   ├─ ship_manager.py          # create/join/leave/upgrade
+│   │   ├─ ship_war.py              # war engine
+│   │   └─ ship_storage.py
+│   ├─ combat/
+│   │   ├─ duel.py
+│   │   └─ events.py
+│   ├─ utils/
+│   │   ├─ db.py                    # atomic DB wrapper
+│   │   ├─ logger.py
+│   │   └─ helpers.py
+│   └─ admin.py
+├─ /data
+│   ├─ items.json
+│   ├─ shops.json
+│   ├─ ships.json
+│   ├─ users.json
+│   └─ events.json
+└─ README.md
+
+14) Data schemas (JSON examples)
+
+player (users.json)
+
+{
+  "123456789012345678": {
+    "user_id": "123456789012345678",
+    "server_id": "987654321098765432",
+    "berries": 1200,
+    "xp": 350,
+    "level": 4,
+    "hp": 100,
+    "max_hp": 100,
+    "bag": {"cannonball": 10, "repair_tool": 1},
+    "ship_id": "ship_001",
+    "daily_claim": "2025-11-14T00:00:00Z",
+    "cooldowns": {"duel": 3600}
+  }
+}
+
+
+ship (ships.json)
+
+{
+  "ship_001": {
+    "id": "ship_001",
+    "server_id": "987654321098765432",
+    "name": "Thousand Sunny II",
+    "captain_id": "123456789012345678",
+    "members": ["123...","456..."],
+    "level": 2,
+    "xp": 1500,
+    "hp": 2000,
+    "max_hp": 2000,
+    "cannons": 4,
+    "cannonballs": 120,
+    "repair_tools": 10,
+    "medical_kits": 5,
+    "supplies": 300,
+    "storage": {"capacity": 1000, "contents": {"gold_coin": 1000}},
+    "upgrades": {"hull_lvl": 2, "cannon_lvl": 1, "storage_lvl": 1}
+  }
+}
+
+15) Example flows (user stories)
+
+A. New server -> ship formation
+
+Captain creates ship (/ship create) costing 5,000 berries. Ship created with base stats.
+
+Captain invites members — up to 100.
+
+Crew runs /crew mission to earn ship XP & berries.
+
+B. War flow
+
+Captain issues challenge /ship war target_ship.
+
+Officers vote to accept. Stakes (berries) posted to escrow.
+
+War engine runs 3 rounds. Ships can use bombs, smoke, decoys.
+
+Winner gets escrow + loot, loser loses random % of supplies & some treasure stored. Some berries burned as tax.
+
+C. Daily drop -> spending loop
+
+Player claims /daily: gets berries + common loot.
+
+Player chooses to save or buy Cannonball from Weapon Shop.
+
+Ship equips cannonballs to prepare for war and improve damage.
+
+In war, cannonball usage reduces supply and triggers repairs cost (sink).
+
+16) Anti-abuse & Fairplay rules
+
+cooldowns on /daily, chat XP, duels.
+
+per-server per-user earning rate limit.
+
+server owner/admins can blacklist farming accounts.
+
+audit endpoint for large transfers; require 2FA admin approval for forced transfers/refunds.
+
+17) Balancing starting numbers (tuneable)
+
+ship creation: 5,000 berries
+
+cannonball pack (10): 500 berries
+
+repair tool: 700 berries
+
+daily base berries: 100–300; ship bonus +50%
+
+duel wager min: 50 berries
+
+shop sellback rate: 30–50% of buy price
+
+auction fee: 5% burned
+
+18) Suggested UX details & motivational microcopy
+
+When a player first joins, show a “Welcome to the Grand Line” onboarding guide that explains ships and benefits.
+
+Use progress bars for ship XP and level.
+
+Visual feedback for wins/losses: automatic wanted poster, leaderboards highlight.
+
+Keep messages short & humorous in Luffy voice to increase delight.
